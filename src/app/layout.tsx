@@ -23,14 +23,13 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="bg-[#000]">
       <body
-        className="geist_... geist_mono_..."
+        className="geist_... geist_mono_... max-w-[1240px] w-full mx-auto"
         data-new-gr-c-s-check-loaded="14.1272.0"
         data-gr-ext-installed=""
         cz-shortcut-listen="true"
       >
-
         {children}
       </body>
     </html>
