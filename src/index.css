@@ -1,7 +1,16 @@
+/* ------------------------------ */
+/* Tailwind Setup */
+/* ------------------------------ */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+@plugin "tailwindcss-animate";
+@custom-variant dark (&:is(.dark *));
+
+/* ------------------------------ */
+/* Theme Tokens */
+/* ------------------------------ */
 @theme {
   --color-pink-neon: #ff007f;
   --color-pink-hot: #e1006a;
@@ -13,11 +22,13 @@
   --animate-spin-slow: spin-slow 20s linear infinite;
 
   @keyframes pulse-glow {
+
     0%,
     100% {
       opacity: 0.4;
       transform: scale(1);
     }
+
     50% {
       opacity: 0.7;
       transform: scale(1.05);
@@ -25,10 +36,12 @@
   }
 
   @keyframes float {
+
     0%,
     100% {
       transform: translateY(0px);
     }
+
     50% {
       transform: translateY(-20px);
     }
@@ -38,13 +51,40 @@
     from {
       transform: rotate(0deg);
     }
+
     to {
       transform: rotate(360deg);
     }
   }
 }
 
+/* ------------------------------ */
+/* CSS Variables (Light / Dark) */
+/* ------------------------------ */
+:root {
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --bg-background: oklch(0.97 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --bg-background: oklch(0.22 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --border: oklch(1 0 1 / 10%);
+  --input: oklch(1 0 0 / 15%);
+}
+
+/* ------------------------------ */
 /* Base Styles */
+/* ------------------------------ */
 @layer base {
   html {
     scroll-behavior: smooth;
@@ -60,7 +100,25 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Custom Scrollbar */
+  .flex-md-hidden {
+    display: flex;
+  }
+
+  .hidden-md-flex {
+    display: none;
+  }
+
+  @media (max-width: 768px) {
+    .flex-md-hidden {
+      display: none;
+    }
+
+    .hidden-md-flex {
+      display: flex;
+    }
+  }
+
+  /* Scrollbar */
   ::-webkit-scrollbar {
     width: 8px;
   }
@@ -79,33 +137,26 @@
     color: #ffffff;
   }
 
-  /* Input defaults */
   input,
   textarea {
     font-family: inherit;
     background: transparent;
-    border: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     color: #ffffff;
-    transition: border-color 0.3s ease;
-  }
-
-  input:focus,
-  textarea:focus {
-    outline: none;
-    border-bottom-color: #ff007f;
-  }
-
-  input::placeholder,
-  textarea::placeholder {
-    color: rgba(255, 255, 255, 0.4);
   }
 }
 
-/* Custom Utilities */
+/* ------------------------------ */
+/* Utilities */
+/* ------------------------------ */
 @layer utilities {
+  .center-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .glass {
-    background: rgba(255, 255, 255, 0.08);
+    background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(24px) saturate(180%);
     -webkit-backdrop-filter: blur(24px) saturate(180%);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -135,12 +186,5 @@
     box-shadow:
       0 0 60px rgba(255, 0, 127, 0.5),
       0 0 120px rgba(255, 0, 127, 0.2);
-  }
-}
-
-/* Tailwind v4 Responsive Utilities */
-@media (max-width: 640px) {
-  html {
-    font-size: 14px;
   }
 }

@@ -31,7 +31,7 @@ export const aboutItems = [
         description:
             "Portfolios that match your expertise. Stand out in a crowded market.",
         className: "md:col-span-2 md:row-span-1 min-h-[200px]",
-        theme: "gradient",
+        theme: "dark",
     },
     {
         id: "03",

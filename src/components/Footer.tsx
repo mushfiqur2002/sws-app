@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
 import { motion } from "motion/react";
 
 const Footer = () => {
   return (
     <motion.footer
-      className="mt-12 pt-6 sm:pt-8 pb-6 sm:pb-8 border-t border-white/25"
+      className=" pt-6 sm:pt-8 pb-6 sm:pb-8 border-t border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]"
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       viewport={{ once: true }}
@@ -16,30 +16,31 @@ const Footer = () => {
           <span className="text-lg sm:text-xl font-bold text-gradient">
             SWS
           </span>
-          <span className="text-white/30 text-xs sm:text-sm">
+          <span className="text-[var(--foreground)]/40 text-xs sm:text-sm">
             © 2025 Steady Web Solutions
           </span>
         </div>
-        <div className="flex items-center gap-4 sm:gap-6">
+
+        {/* <div className="flex items-center gap-4 sm:gap-6">
           <a
             href="#"
-            className="text-white/40 hover:text-white transition-colors text-xs sm:text-sm"
+            className="text-[var(--foreground)]/40 hover:text-[var(--foreground)] transition-colors text-xs sm:text-sm"
           >
             Privacy
           </a>
           <a
             href="#"
-            className="text-white/40 hover:text-white transition-colors text-xs sm:text-sm"
+            className="text-[var(--foreground)]/40 hover:text-[var(--foreground)] transition-colors text-xs sm:text-sm"
           >
             Terms
           </a>
           <a
             href="#"
-            className="text-white/40 hover:text-[#FF007F] transition-colors text-xs sm:text-sm"
+            className="text-[var(--foreground)]/40 hover:text-[#FF007F] transition-colors text-xs sm:text-sm"
           >
             Telegram
           </a>
-        </div>
+        </div> */}
       </div>
     </motion.footer>
   );

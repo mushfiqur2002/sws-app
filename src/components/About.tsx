@@ -1,120 +1,126 @@
-"use client"
+"use client";
 
 import { motion } from "motion/react";
 import { useRef } from "react";
 import { aboutItems } from "../constants";
 
-const AboutCard = ({ item }: any) => {
-    // Define styles: Base = Mobile Theme, md = Desktop Unified Dark Theme
-    const styles: any = {
-        white: {
-            container:
-                "bg-white border-transparent md:bg-[#0a0a0a] md:border-white/5",
-            title: "text-black md:text-white",
-            desc: "text-black/60 md:text-white/60",
-            number: "text-black/5 md:text-white/5",
-            accent: "bg-[#FF007F]", // Pink pill looks good on both
-            // Mobile: Subtle shadow. Desktop: Removed (replaced by hover gradient)
-            mobileGradientLabel: "from-black/5 to-transparent md:hidden",
-        },
-        gradient: {
-            container:
-                "bg-linear-to-br from-[#8B0046] to-[#5A002E] border-transparent md:bg-[#0a0a0a] md:bg-none md:border-white/5",
-            title: "text-white",
-            desc: "text-white/80 md:text-white/60",
-            number: "text-white/20 md:text-white/5",
-            accent: "bg-white md:bg-[#FF007F]", // White pill on pink, Pink on dark
-            mobileGradientLabel: "from-black/10 to-transparent md:hidden",
-        },
-        dark: {
-            container: "bg-[#0a0a0a] border-white/5",
-            title: "text-white",
-            desc: "text-white/60",
-            number: "text-white/5",
-            accent: "bg-[#FF007F]",
-            mobileGradientLabel: "from-[#FF007F]/20 to-transparent md:hidden",
-        },
-    };
+// --------------------
+// Types
+// --------------------
+type Theme = "white" | "gradient" | "dark";
 
-    const currentStyle = styles[item.theme];
+// --------------------
+// Theme Styles (same values, tokenized)
+// --------------------
+const THEME_STYLES: Record<Theme, any> = {
+    white: {
+        container: "bg-white border-transparent md:bg-[var(--card)] md:border-[var(--border)]",
+        title: "text-black md:text-[var(--foreground)]",
+        desc: "text-black/60 md:text-[var(--foreground)]/60",
+        number: "text-black/5 md:text-[var(--foreground)]/5",
+        accent: "bg-[#FF007F]",
+        mobileGradientLabel: "from-black/5 to-transparent md:hidden",
+    },
+    gradient: {
+        container: "bg-linear-to-br from-[#8B0046] to-[#5A002E]",
+        title: "text-[var(--foreground)]",
+        desc: "text-[var(--foreground)]/80 md:text-[var(--foreground)]/60",
+        number: "text-[var(--foreground)]/20 md:text-[var(--foreground)]/5",
+        accent: "bg-white md:bg-[#FF007F]",
+        mobileGradientLabel: "from-black/10 to-transparent md:hidden",
+    },
+    dark: {
+        container: "bg-[var(--card)] border-[var(--border)]",
+        title: "text-[var(--foreground)]",
+        desc: "text-[var(--foreground)]/60",
+        number: "text-[var(--foreground)]/5",
+        accent: "bg-[#FF007F]",
+        mobileGradientLabel: "from-[#FF007F]/20 to-transparent md:hidden",
+    },
+};
+
+// --------------------
+// About Card
+// --------------------
+const AboutCard = ({ item }: any) => {
+    const styles = THEME_STYLES[item.theme as Theme];
 
     return (
-        <motion.div
-            className={`relative group p-8 sm:p-10 rounded-3xl overflow-hidden border ${currentStyle.container} ${item.className}`}
-            whileHover="hover"
-            initial="initial"
-        >
-            {/* Mobile Ambience (Theme Specific) - Hidden on Desktop */}
-            <div
-                className={`absolute inset-0 bg-linear-to-br ${currentStyle.mobileGradientLabel}`}
-            />
-
-            {/* Desktop Hover Gradient (Unified) - Hidden on Mobile, Shows on Group Hover */}
-            <motion.div className="hidden md:block absolute inset-0 bg-linear-to-br from-[#FF007F]/40 to-black opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-            {/* Massive Number */}
-            <motion.span
-                className={`absolute -bottom-8 -right-4 text-[12rem] sm:text-[16rem] font-bold leading-none select-none pointer-events-none transition-colors duration-300 ${currentStyle.number} md:group-hover:text-white/20`}
-                variants={{
-                    initial: { y: 0 },
-                    hover: { y: -10 },
-                }}
-                transition={{ duration: 0.5 }}
-            >
-                {item.id}
-            </motion.span>
-
-            {/* Content */}
+        <div className="w-[100%] h-[220px]">
             <motion.div
-                className="relative z-10 h-full flex flex-col justify-between"
-                variants={{
-                    initial: { y: 0 },
-                    hover: { y: -5 },
-                }}
-                transition={{ duration: 0.4 }}
+                className={`w-full h-full relative group rounded-xl px-8 py-8 overflow-hidden border border-[var(--background)] cursor-pointer glass ${styles.container}`}
+                whileHover="hover"
+                initial="initial"
             >
-                <div>
-                    <h3
-                        className={`text-3xl sm:text-4xl md:text-5xl font-bold mb-4 transition-colors duration-300 select-none ${currentStyle.title}`}
-                    >
-                        {item.title}
-                    </h3>
-                    <p
-                        className={`text-lg sm:text-xl max-w-md font-light transition-colors duration-300 select-none ${currentStyle.desc}`}
-                    >
-                        {item.description}
-                    </p>
-                </div>
+                {/* Mobile ambience */}
+                <div className={`absolute inset-0 bg-linear-to-br ${styles.mobileGradientLabel}`} />
 
-                {/* Decorative Pill */}
-                <div
-                    className={`mt-8 h-1.5 rounded-full transition-all duration-500 w-12 md:w-12 md:opacity-50 group-hover:w-24 group-hover:opacity-100 ${currentStyle.accent}`}
-                />
+                {/* Desktop hover gradient */}
+                <motion.div className="absolute inset-0 glass-pink opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                {/* Big number */}
+                <motion.span
+                    className={`absolute -bottom-8 -right-4 text-[8rem] font-bold leading-none select-none pointer-events-none transition-colors duration-300 ${styles.number}`}
+                    variants={{
+                        initial: { y: 0 },
+                        hover: { y: -10 },
+                    }}
+                    transition={{ duration: 0.5 }}
+                >
+                    {item.id}
+                </motion.span>
+
+                {/* Content */}
+                <motion.div
+                    className="relative z-10 h-full flex flex-col justify-between"
+                    variants={{
+                        initial: { y: 0 },
+                        hover: { y: -5 },
+                    }}
+                    transition={{ duration: 0.4 }}
+                >
+                    <div>
+                        <h1 className={`text-2xl font-bold transition-colors duration-300 select-none ${styles.title}`}>
+                            {item.title}
+                        </h1>
+                        <p className={`text-sm transition-colors duration-300 select-none pt-2 ${styles.desc}`}>
+                            {item.description}
+                        </p>
+                    </div>
+
+                    {/* Decorative pill */}
+                    <div
+                        className={`mt-8 h-1.5 rounded-full transition-all duration-500 w-12 md:opacity-50 group-hover:w-24 group-hover:opacity-100 ${styles.accent}`}
+                    />
+                </motion.div>
             </motion.div>
-        </motion.div>
+        </div>
+
     );
 };
 
+// --------------------
+// About Section
+// --------------------
 const About = () => {
-    const containerRef = useRef(null);
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
     return (
-        <section id="about" className="relative py-20 sm:py-32 px-4 sm:px-6">
-            <div className="max-w-7xl mx-auto">
-                {/* Section Header */}
-                <div className="mb-16 sm:mb-24">
-                    <h2 className="text-2xl sm:text-5xl md:text-2xl font-bold text-white leading-[0.9]">
+        <section
+            id="about"
+            className="pt-20 bg-[var(--background)] text-[var(--foreground)]">
+            <div className="w-full flex flex-col items-center justify-center">
+                {/* Header */}
+                <div>
+                    <h2 className="text-4xl font-bold text-[var(--foreground)] leading-[0.9] text-center capitalize">
                         Built for those
                         <br />
-                        <span className="text-white/50">who dare to lead.</span>
+                        <span className="text-[var(--foreground)]/50">who dare to lead</span>
                     </h2>
                 </div>
 
-                {/* Bento Grid */}
-                <div
-                    ref={containerRef}
-                    className="grid grid-cols-1 md:grid-cols-4 gap-4 sm:gap-6 auto-rows-[minmax(200px,auto)]"
-                >
+                {/* Grid */}
+                <div ref={containerRef} className="w-[90%] grid grid-col-1 md:grid-cols-3 gap-6 place-items-center mt-6">
                     {aboutItems.map((item) => (
                         <AboutCard key={item.id} item={item} />
                     ))}
